@@ -72,11 +72,6 @@ function btnCadastrar(event) {
 
     let produtosSelecionados = coletarProdutos();
 
-    if (produtosSelecionados.length === 0) {
-        alert("Selecione pelo menos um produto.");
-        return;
-    }
-
     let pessoaObjeto = { nome, quarto, produtos: produtosSelecionados };
     listaNomes.push(pessoaObjeto);
 
