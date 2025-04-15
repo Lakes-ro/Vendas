@@ -1,19 +1,19 @@
 body {
-    background-color: powderblue; /* Fundo da página */
+    background-color: powderblue; /
     font-family: Arial, sans-serif;
 }
 .product-img {
-    max-width: 150px; /* Ajuste do tamanho das imagens */
+    max-width: 150px; 
     height: auto;
     margin-bottom: 15px;
 }
 .card {
-background-color: powderblue; /* Fundo similar ao background da página */
-border-radius: 8px; /* Deixa os cantos arredondados */
-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona leve sombra */
+background-color: powderblue; 
+border-radius: 8px; 
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
 }
 #Rodapé {
-background-color: powderblue; /* Mantém o fundo do rodapé consistente */
+background-color: powderblue; 
 padding: 20px;
 border-radius: 8px;
 }
@@ -27,51 +27,7 @@ border-radius: 8px;
             border: 1px solid #ccc;
             min-height: 50px;
             width: 200px;
-
 }
-
-/*
-
-body {
-  background-color: powderblue; 
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  /*background-image: url(https://www.google.com/search?q=loja+logo+alimento&sca_esv=0f75ce2b0e7a8d3f&rlz=1C1GCEU_pt-BRBR992BR992&udm=2&biw=1920&bih=911&ei=6OTjZ_yiBNew5OUPtsiPoAs&ved=0ahUKEwj8ttic0qeMAxVXGLkGHTbkA7QQ4dUDCBE&uact=5&oq=loja+logo+alimento&gs_lp=EgNpbWciEmxvamEgbG9nbyBhbGltZW50b0iFC1DEAljVCnABeACQAQCYAWygAa8GqgEDMy41uAEDyAEA-AEBmAIFoAKnA8ICChAAGIAEGEMYigXCAgYQABgHGB7CAgUQABiABMICBBAAGB7CAgYQABgFGB7CAgYQABgIGB6YAwCIBgGSBwMxLjSgB7kKsgcDMC40uAefAw&sclient=img#vhid=r26KbI7ymHcyhM&vssid=mosaic);     */
-/*}
-
-/*
-
-.select {
-  width: 200px; /* Define a largura do select */
-  /*height: 400px; /* Define a altura do select */
-  /*font-size: 160px; /* Tamanho da fonte */
-/*}
-
-/* text-decoration : none Tira o ___ dos links
-hover é quando passa o mouse por cima, tem que colocar color: "blue" 
-
-fixa na tela o que voce quer que seja fixado independente da barra de rolagem
-.fixed-"sua class" {
-position: fixed
-top:20px;
-right:20px
-background-color:
-border: 2px solid #000
-}
-
-É fixado na sua tela apartir do momento que voce passa por ela
-.sticky-"sua class"{
-position:sticky;
-top:0;
-background-color:
-border:2px solid #000;
-}
-
-o Flex box flex conteiner display flex deixa em forma de linha e não coluna
-e o flex é flexivel, logo, responsivel
-
-*/
 
 .topo h1{
   font-size: 100px;
