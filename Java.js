@@ -55,19 +55,19 @@ function coletarProdutos() {
 function AdicionarNomesElementoHtml(pessoaObjeto) {
     var elementoHmtl = document.getElementById("lista-nomes");
 
-    let html = <li class="mt-3 list-group-item">
+    let html = `<li class="mt-3 list-group-item">
         <button onclick='ExcluirElemento(this)' class='btn btn-danger'>
             <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <strong>Nome:</strong> ${pessoaObjeto.nome}<br>
-        <strong>Quarto:</strong> ${pessoaObjeto.quarto}<br>;
+        <strong>Quarto:</strong> ${pessoaObjeto.quarto}<br>`;
 
     pessoaObjeto.produtos.forEach(prod => {
-        html += <strong>${prod.nome}</strong> - ${prod.sabor} - 
-        <strong>Qtd:</strong> ${prod.quantidade}<br>;
+        html += `<strong>${prod.nome}</strong> - ${prod.sabor} - 
+        <strong>Qtd:</strong> ${prod.quantidade}<br>`;
     });
 
-    html += </li>;
+    html += `</li>`;
 
     elementoHmtl.insertAdjacentHTML("beforeend", html);
 }
