@@ -79,14 +79,30 @@ function ExcluirElemento(element) {
 
 function atualizarTotal() {
     let total = 0;
+
     $("#lista-nomes li").each(function () {
         let texto = $(this).text();
-        let regex = /Qtd:\s(\d+)/g;
+        let regex = /([\\w\\s]+) - .+? - Qtd:\\s(\\d+)/g;
         let match;
+        let produtos = {};
 
         while ((match = regex.exec(texto)) !== null) {
-            let qtd = parseInt(match[1]);
-            total += qtd * 2.5; // R$3,00 - R$0,50 de desconto
+            let nomeProduto = match[1].trim();
+            let qtd = parseInt(match[2]);
+
+            if (!produtos[nomeProduto]) {
+                produtos[nomeProduto] = 0;
+            }
+            produtos[nomeProduto] += qtd;
+        }
+
+        for (let produto in produtos) {
+            let qtd = produtos[produto];
+            if (qtd === 1) {
+                total += 3;
+            } else {
+                total += 3 + (qtd - 1) * 2.5;
+            }
         }
     });
 
