@@ -55,19 +55,19 @@ function coletarProdutos() {
 function AdicionarNomesElementoHtml(pessoaObjeto) {
     var elementoHmtl = document.getElementById("lista-nomes");
 
-    let html = `<li class="mt-3 list-group-item">
+    let html = <li class="mt-3 list-group-item">
         <button onclick='ExcluirElemento(this)' class='btn btn-danger'>
             <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <strong>Nome:</strong> ${pessoaObjeto.nome}<br>
-        <strong>Quarto:</strong> ${pessoaObjeto.quarto}<br>`;
+        <strong>Quarto:</strong> ${pessoaObjeto.quarto}<br>;
 
     pessoaObjeto.produtos.forEach(prod => {
-        html += `<strong>${prod.nome}</strong> - ${prod.sabor} - 
-        <strong>Qtd:</strong> ${prod.quantidade}<br>`;
+        html += <strong>${prod.nome}</strong> - ${prod.sabor} - 
+        <strong>Qtd:</strong> ${prod.quantidade}<br>;
     });
 
-    html += `</li>`;
+    html += </li>;
 
     elementoHmtl.insertAdjacentHTML("beforeend", html);
 }
@@ -79,39 +79,18 @@ function ExcluirElemento(element) {
 
 function atualizarTotal() {
     let total = 0;
-
-    let produtosAgrupados = {};
-
     $("#lista-nomes li").each(function () {
         let texto = $(this).text();
-        let regex = /([\w\s]+) - .+? - Qtd:\s(\d+)/g;
+        let regex = /Qtd:\s(\d+)/g;
         let match;
 
         while ((match = regex.exec(texto)) !== null) {
-            let nomeProduto = match[1].trim();
-            let qtd = parseInt(match[2]);
-
-            if (!produtosAgrupados[nomeProduto]) {
-                produtosAgrupados[nomeProduto] = 0;
-            }
-            produtosAgrupados[nomeProduto] += qtd;
+            let qtd = parseInt(match[1]);
+            total += qtd * 2.5; // R$3,00 - R$0,50 de desconto
         }
     });
 
-    for (let produto in produtosAgrupados) {
-        let qtd = produtosAgrupados[produto];
-        if (qtd === 1) {
-            total += 3;
-        } else {
-            total += 3 + (qtd - 1) * 2.5;
-        }
-    }
-
     $("#totalValue").text("R$ " + total.toFixed(2).replace('.', ','));
-}
-
-function validarFormulario(nome, quarto) {
-    return nome && quarto;
 }
 
 function validarFormulario(nome, quarto) {
