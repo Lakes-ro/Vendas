@@ -80,33 +80,38 @@ function ExcluirElemento(element) {
 function atualizarTotal() {
     let total = 0;
 
+    let produtosAgrupados = {};
+
     $("#lista-nomes li").each(function () {
         let texto = $(this).text();
-        let regex = /([\\w\\s]+) - .+? - Qtd:\\s(\\d+)/g;
+        let regex = /([\w\s]+) - .+? - Qtd:\s(\d+)/g;
         let match;
-        let produtos = {};
 
         while ((match = regex.exec(texto)) !== null) {
             let nomeProduto = match[1].trim();
             let qtd = parseInt(match[2]);
 
-            if (!produtos[nomeProduto]) {
-                produtos[nomeProduto] = 0;
+            if (!produtosAgrupados[nomeProduto]) {
+                produtosAgrupados[nomeProduto] = 0;
             }
-            produtos[nomeProduto] += qtd;
-        }
-
-        for (let produto in produtos) {
-            let qtd = produtos[produto];
-            if (qtd === 1) {
-                total += 3;
-            } else {
-                total += 3 + (qtd - 1) * 2.5;
-            }
+            produtosAgrupados[nomeProduto] += qtd;
         }
     });
 
+    for (let produto in produtosAgrupados) {
+        let qtd = produtosAgrupados[produto];
+        if (qtd === 1) {
+            total += 3;
+        } else {
+            total += 3 + (qtd - 1) * 2.5;
+        }
+    }
+
     $("#totalValue").text("R$ " + total.toFixed(2).replace('.', ','));
+}
+
+function validarFormulario(nome, quarto) {
+    return nome && quarto;
 }
 
 function validarFormulario(nome, quarto) {
