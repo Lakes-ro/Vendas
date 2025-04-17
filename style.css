@@ -1,19 +1,19 @@
 body {
-    background-color: powderblue; /
+    background-color: powderblue; /* Fundo da página */
     font-family: Arial, sans-serif;
 }
 .product-img {
-    max-width: 150px; 
+    max-width: 150px; /* Ajuste do tamanho das imagens */
     height: auto;
     margin-bottom: 15px;
 }
 .card {
-background-color: powderblue; 
-border-radius: 8px; 
-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+background-color: powderblue; /* Fundo similar ao background da página */
+border-radius: 8px; /* Deixa os cantos arredondados */
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona leve sombra */
 }
 #Rodapé {
-background-color: powderblue; 
+background-color: powderblue; /* Mantém o fundo do rodapé consistente */
 padding: 20px;
 border-radius: 8px;
 }
@@ -27,11 +27,30 @@ border-radius: 8px;
             border: 1px solid #ccc;
             min-height: 50px;
             width: 200px;
+
 }
 
 .topo h1{
   font-size: 100px;
   }
+
+  .product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    margin: 10px;
+    padding: 20px;
+    border: 2px solid black;
+    flex: 1 1 250px;
+    max-width: 300px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+}
+
 
 .product {
   text-align: center; 
@@ -58,6 +77,14 @@ h1, h2, h3 {
 .danix{
   text-align: center;
 }
+
+.sabor-destaque {
+    font-weight: bold;
+    color: darkred;
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+
 
 @media (max-width: 980px) {
   html {
