@@ -1,60 +1,106 @@
-// Conexão com Supabase
 const supabaseUrl = "https://lbjsdaexqhkgxsuwfgmg.supabase.co";
-const supabaseKey = "SUA_CHAVE_PUBLICA_DO_SUPABASE_AQUI"; // substitua pela sua
+const supabaseKey = "SUA_CHAVE_PUBLICA_DO_SUPABASE_AQUI"; // <- troque aqui
 const database = supabase.createClient(supabaseUrl, supabaseKey);
 
-// Função chamada ao clicar em "Enviar pedido"
-async function Envio() {
+// Botão "Adicionar ao Carrinho"
+function btnCadastrar() {
   const nome = document.getElementById("nome").value;
   const quarto = document.getElementById("quarto").value;
 
   if (!nome || !quarto) {
-    alert("Preencha nome e quarto antes de enviar.");
+    alert("Preencha nome e quarto antes.");
     return;
   }
 
-  const danixSelects = document.querySelectorAll("#danix select");
-  const danixSabor = danixSelects[0].value;
-  const danixQtd = parseInt(danixSelects[1].value);
+  const selects = document.querySelectorAll(".card");
+  const lista = document.getElementById("lista-nomes");
+  lista.innerHTML = "";
 
-  const guaravitaQtd = parseInt(document.querySelector("#guaravita select").value);
+  selects.forEach((card) => {
+    const titulo = card.querySelector("h1").innerText;
+    const selects = card.querySelectorAll("select");
 
-  const bisQtd = parseInt(document.querySelector("#bis select").value);
+    if (selects.length === 2) {
+      const sabor = selects[0].value;
+      const qtd = parseInt(selects[1].value);
 
-  const sucoSelects = document.querySelectorAll("#suco select");
-  const sucoSabor = sucoSelects[0].value;
-  const sucoQtd = parseInt(sucoSelects[1].value);
+      if (qtd > 0) {
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.innerText = `${titulo} - ${sabor} x${qtd}`;
+        li.dataset.produto = titulo;
+        li.dataset.sabor = sabor;
+        li.dataset.quantidade = qtd;
+        lista.appendChild(li);
+      }
+    } else if (selects.length === 1) {
+      const qtd = parseInt(selects[0].value);
+      if (qtd > 0) {
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.innerText = `${titulo} x${qtd}`;
+        li.dataset.produto = titulo;
+        li.dataset.sabor = "-";
+        li.dataset.quantidade = qtd;
+        lista.appendChild(li);
+      }
+    }
+  });
 
-  let produtos = [];
+  atualizarTotal();
+}
+
+// Atualiza o total do carrinho
+function atualizarTotal() {
+  const itens = document.querySelectorAll("#lista-nomes li");
   let total = 0;
 
-  if (danixQtd > 0) {
-    produtos.push({ produto: "Danix", quantidade: danixQtd, sabor: danixSabor });
-    total += danixQtd * 3;
-  }
+  itens.forEach((li) => {
+    const produto = li.dataset.produto;
+    const qtd = parseInt(li.dataset.quantidade);
 
-  if (guaravitaQtd > 0) {
-    produtos.push({ produto: "Guaravita", quantidade: guaravitaQtd });
-    total += guaravitaQtd * 3;
-  }
+    if (produto.includes("Bis")) {
+      total += qtd < 4 ? qtd * 3 : Math.floor(qtd / 4) * 10 + (qtd % 4) * 3;
+    } else if (produto.includes("Suco")) {
+      total += qtd < 4 ? qtd * 3 : Math.floor(qtd / 4) * 10 + (qtd % 4) * 3;
+    } else {
+      total += qtd * 3;
+    }
+  });
 
-  if (bisQtd > 0) {
-    produtos.push({ produto: "Bis Xtra", quantidade: bisQtd });
-    total += bisQtd < 4 ? bisQtd * 3 : Math.floor(bisQtd / 4) * 10 + (bisQtd % 4) * 3;
-  }
+  document.getElementById("totalValue").innerText = "R$ " + total.toFixed(2);
+}
 
-  if (sucoQtd > 0) {
-    produtos.push({ produto: "Suco", quantidade: sucoQtd, sabor: sucoSabor });
-    total += sucoQtd < 4 ? sucoQtd * 3 : Math.floor(sucoQtd / 4) * 10 + (sucoQtd % 4) * 3;
-  }
+// Botão "Enviar pedido"
+async function Envio() {
+  const nome = document.getElementById("nome").value;
+  const quarto = document.getElementById("quarto").value;
+  const lista = document.querySelectorAll("#lista-nomes li");
 
-  if (produtos.length === 0) {
-    alert("Selecione pelo menos 1 produto.");
+  if (!nome || !quarto) {
+    alert("Preencha nome e quarto.");
     return;
   }
 
-  for (let item of produtos) {
-    const { produto, quantidade, sabor = "-" } = item;
+  if (lista.length === 0) {
+    alert("Adicione algo ao carrinho antes de enviar.");
+    return;
+  }
+
+  let total = 0;
+
+  for (let li of lista) {
+    const produto = li.dataset.produto;
+    const sabor = li.dataset.sabor || "-";
+    const quantidade = parseInt(li.dataset.quantidade);
+
+    if (produto.includes("Bis")) {
+      total += quantidade < 4 ? quantidade * 3 : Math.floor(quantidade / 4) * 10 + (quantidade % 4) * 3;
+    } else if (produto.includes("Suco")) {
+      total += quantidade < 4 ? quantidade * 3 : Math.floor(quantidade / 4) * 10 + (quantidade % 4) * 3;
+    } else {
+      total += quantidade * 3;
+    }
 
     const { error } = await database
       .from("FomeZeroBD")
@@ -64,16 +110,16 @@ async function Envio() {
         Produto: produto,
         Quantidade: quantidade,
         Sabor: sabor,
-        "Valor Total": total
+        "Valor Total": total,
       });
 
     if (error) {
-      alert("Erro ao enviar o pedido: " + error.message);
+      alert("Erro ao enviar: " + error.message);
       return;
     }
   }
 
-  // Alerta final e recarregar
   alert("Seu pedido foi enviado!");
   window.location.reload();
 }
+
