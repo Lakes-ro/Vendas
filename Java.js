@@ -190,15 +190,9 @@ $(document).ready(function () {
         "Valor Total": valor
       }])
 
-      if (error) {
-        alert('Erro ao enviar: ' + error.message)
-      } else {
-        alert('Pedido enviado com sucesso!')
-        location.reload()
-      }
-    })
-  })
+    
 </script>
+
 
 
 
