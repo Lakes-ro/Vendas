@@ -154,11 +154,11 @@
 
             <h1>Nome</h1>
 
-           <input type="text" id="nome" placeholder="Seu nome" required>
+            <input onkeyup="eventEscrever(event)" type="text" placeholder="Nome" id="nome" required>
 
             <h1>Quarto</h1>
 
-            <input type="text" id="quarto" placeholder="Número do quarto" required>
+            <input onkeyup="eventEscrever(event)" type="text" placeholder="Nº do Quarto e o Residencial" id="quarto" required>
 
             <p></p>
 
@@ -199,8 +199,7 @@
             <p></p>
 
             
-            <button class="btn btn-success" onclick="Envio()">Enviar pedido</button>
-
+            <input onclick="Envio(); return true;" type="submit" value="Enviar pedido" id="Enviar_pedido">
 
         </div>
 
@@ -214,5 +213,6 @@
 <h7>Anuncie aqui</h7>
 </body>
 </html>
+
 
 
