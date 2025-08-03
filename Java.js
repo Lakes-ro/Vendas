@@ -157,3 +157,46 @@ $(document).ready(function () {
         }
     });
 });
+
+
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+  const supabaseUrl = 'https://lbjsdaexqhkgxsuwfgmg.supabase.co'
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxianNkYWV4cWhrZ3hzdXdmZ21nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzMTk5NjgsImV4cCI6MjA2MTg5NTk2OH0.SV93_0NdI_CgsoV6cTNzKlo74kk0CrViKn_K9fh0hJA'
+  const supabase = createClient(supabaseUrl, supabaseKey)
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form')
+    if (!form) return
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const produto = form.querySelector('[name="Produto"]')?.value || ''
+      const quantidade = form.querySelector('[name="Quantidade"]')?.value || ''
+      const sabor = form.querySelector('[name="Sabor"]')?.value || ''
+      const nome = form.querySelector('[name="Nome"]')?.value || ''
+      const quarto = form.querySelector('[name="Quarto"]')?.value || ''
+      const valor = form.querySelector('[name="Valor Total"]')?.value || ''
+
+      const { data, error } = await supabase.from('FomeZeroBD').insert([{
+        Produto: produto,
+        Quantidade: quantidade,
+        Sabor: sabor,
+        Nome: nome,
+        Quarto: quarto,
+        "Valor Total": valor
+      }])
+
+      if (error) {
+        alert('Erro ao enviar: ' + error.message)
+      } else {
+        alert('Pedido enviado com sucesso!')
+        location.reload()
+      }
+    })
+  })
+</script>
+
