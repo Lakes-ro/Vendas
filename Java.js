@@ -1,77 +1,7 @@
 const supabaseUrl = "https://lbjsdaexqhkgxsuwfgmg.supabase.co";
-const supabaseKey = "SUA_CHAVE_PUBLICA_DO_SUPABASE_AQUI"; // <- troque aqui
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxianNkYWV4cWhrZ3hzdXdmZ21nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzMTk5NjgsImV4cCI6MjA2MTg5NTk2OH0.SV93_0NdI_CgsoV6cTNzKlo74kk0CrViKn_K9fh0hJA";
 const database = supabase.createClient(supabaseUrl, supabaseKey);
 
-// Botão "Adicionar ao Carrinho"
-function btnCadastrar() {
-  const nome = document.getElementById("nome").value;
-  const quarto = document.getElementById("quarto").value;
-
-  if (!nome || !quarto) {
-    alert("Preencha nome e quarto antes.");
-    return;
-  }
-
-  const selects = document.querySelectorAll(".card");
-  const lista = document.getElementById("lista-nomes");
-  lista.innerHTML = "";
-
-  selects.forEach((card) => {
-    const titulo = card.querySelector("h1").innerText;
-    const selects = card.querySelectorAll("select");
-
-    if (selects.length === 2) {
-      const sabor = selects[0].value;
-      const qtd = parseInt(selects[1].value);
-
-      if (qtd > 0) {
-        const li = document.createElement("li");
-        li.className = "list-group-item";
-        li.innerText = `${titulo} - ${sabor} x${qtd}`;
-        li.dataset.produto = titulo;
-        li.dataset.sabor = sabor;
-        li.dataset.quantidade = qtd;
-        lista.appendChild(li);
-      }
-    } else if (selects.length === 1) {
-      const qtd = parseInt(selects[0].value);
-      if (qtd > 0) {
-        const li = document.createElement("li");
-        li.className = "list-group-item";
-        li.innerText = `${titulo} x${qtd}`;
-        li.dataset.produto = titulo;
-        li.dataset.sabor = "-";
-        li.dataset.quantidade = qtd;
-        lista.appendChild(li);
-      }
-    }
-  });
-
-  atualizarTotal();
-}
-
-// Atualiza o total do carrinho
-function atualizarTotal() {
-  const itens = document.querySelectorAll("#lista-nomes li");
-  let total = 0;
-
-  itens.forEach((li) => {
-    const produto = li.dataset.produto;
-    const qtd = parseInt(li.dataset.quantidade);
-
-    if (produto.includes("Bis")) {
-      total += qtd < 4 ? qtd * 3 : Math.floor(qtd / 4) * 10 + (qtd % 4) * 3;
-    } else if (produto.includes("Suco")) {
-      total += qtd < 4 ? qtd * 3 : Math.floor(qtd / 4) * 10 + (qtd % 4) * 3;
-    } else {
-      total += qtd * 3;
-    }
-  });
-
-  document.getElementById("totalValue").innerText = "R$ " + total.toFixed(2);
-}
-
-// Botão "Enviar pedido"
 async function Envio() {
   const nome = document.getElementById("nome").value;
   const quarto = document.getElementById("quarto").value;
@@ -83,7 +13,7 @@ async function Envio() {
   }
 
   if (lista.length === 0) {
-    alert("Adicione algo ao carrinho antes de enviar.");
+    alert("Adicione algo ao carrinho.");
     return;
   }
 
@@ -94,13 +24,15 @@ async function Envio() {
     const sabor = li.dataset.sabor || "-";
     const quantidade = parseInt(li.dataset.quantidade);
 
-    if (produto.includes("Bis")) {
-      total += quantidade < 4 ? quantidade * 3 : Math.floor(quantidade / 4) * 10 + (quantidade % 4) * 3;
-    } else if (produto.includes("Suco")) {
-      total += quantidade < 4 ? quantidade * 3 : Math.floor(quantidade / 4) * 10 + (quantidade % 4) * 3;
+    let valorProduto = 0;
+
+    if (produto.includes("Bis") || produto.includes("Suco")) {
+      valorProduto = quantidade < 4 ? quantidade * 3 : Math.floor(quantidade / 4) * 10 + (quantidade % 4) * 3;
     } else {
-      total += quantidade * 3;
+      valorProduto = quantidade * 3;
     }
+
+    total += valorProduto;
 
     const { error } = await database
       .from("FomeZeroBD")
@@ -110,7 +42,7 @@ async function Envio() {
         Produto: produto,
         Quantidade: quantidade,
         Sabor: sabor,
-        "Valor Total": total,
+        "Valor Total": valorProduto,
       });
 
     if (error) {
@@ -122,4 +54,5 @@ async function Envio() {
   alert("Seu pedido foi enviado!");
   window.location.reload();
 }
+
 
